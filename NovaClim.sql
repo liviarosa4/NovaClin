@@ -1,41 +1,43 @@
-SE novaclin
-SHOW TABLES
- 
-CREATE TABLE recepcionista(
-idRecepcionista INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-nomeRecepcionista VARCHAR(50) NOT NULL,
-loginRecepcionista VARCHAR(20) NOT NULL,
-senha CHAR(6) NOT NULL,
-celular CHAR(11)  NULL,
-cpf CHAR(11) NOT NULL
-);
 CREATE TABLE paciente(
-idPaciente INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+idPaciente int PRIMARY KEY NOT NULL ,
 nome VARCHAR(50) NOT NULL,
-cpf CHAR(11) NOT NULL UNIQUE,
+cpf CHAR(11)  NOT NULL UNIQUE ,
 cel CHAR(11) NOT NULL,
-dataNascimento DATETIME NOT NULL,
-email VARCHAR(50) NULL,
-logradouro VARCHAR (30) NOT NULL,
-numero VARCHAR(6) NOT NULL,
+email VARCHAR(30) NULL ,
+logradouro VARCHAR(30) NULL,
+numero VARCHAR(6) NULL,
 complemento VARCHAR(10) NULL,
-cidade VARCHAR(20) NOT NULL,
-cep CHAR(8) NULL,
-observações VARCHAR(100)
+cidade VARCHAR(20) NULL,
+cep CHAR(8)NULL,
+oberservacoes VARCHAR(100) NULL
 );
+
+CREATE TABLE recepcionista(
+idRecepcionista INT NOT NULL PRIMARY KEY,
+nome VARCHAR(50) NOT NULL,
+cpf CHAR(11) NOT NULL UNIQUE ,
+login VARCHAR(20) NOT NULL UNIQUE ,
+senha CHAR(6) NOT NULL,
+celular CHAR(11) NULL
+);
+
 CREATE TABLE especialidade(
 idEspecialidade INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 nomeEspecialidade VARCHAR(30) NOT NULL
 );
+ 
+ 
 CREATE TABLE medico(
 idMedico INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 IdEspecialidade INT NOT NULL,
 nome VARCHAR(50) NOT NULL,
 crm CHAR(8) NOT NULL,
 login VARCHAR(20) NOT NULL,
-senha CHAR(6) NOT NULL
-
+senha CHAR(6) NOT NULL,
+CONSTRAINT Fk_MedicoEspecialidade FOREIGN KEY(idEspecialidade)
+REFERENCES especialidade(idEspecialidade)
 );
+ 
 CREATE TABLE consulta(
 idConsulta INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 idPaciente INT NOT NULL,
@@ -51,12 +53,13 @@ REFERENCES recepcionista(idRecepcionista),
 CONSTRAINT Fk_ConsultaMedico FOREIGN KEY(idMedico)
 REFERENCES medico(idMedico)
 );
+ 
 CREATE TABLE exame(
 idExame INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 idConsulta INT NOT NULL,
 dataHoraExame DATETIME NOT NULL,
 nomeExame VARCHAR(30) NOT NULL,
-statusExame VARCHAR(10) NOT NULL,consultaconsulta
+statusExame VARCHAR(10) NOT NULL,
 resultado VARCHAR(200) NULL,
 dataRetiradaExane DATETIME NULL,
 dataPrevisaoEntrega DATETIME NULL,
@@ -64,92 +67,154 @@ CONSTRAINT Fk_exameconsulta FOREIGN KEY(idConsulta)
 REFERENCES consulta(idConsulta)
 );
 
-ALTER TABLE recepcionista 
-ADD loginRecepcionista VARCHAR(20) NOT NULL;
-
-ALTER TABLE paciente 
+ALTER TABLE paciente
 ADD estado CHAR(2) NOT NULL;
+SHOW TABLES
 
-);
-INSERT INTO paciente(nome,cpf,dataNascimento,email,Logradouro,cel,numero,complemento,cidade,estado,cep)
-VALUES ('Donald','91706452028','2006-02-09','Donald_@gmail.com','Evaristo da veiga','13971295788','11','Casa','Santos','SP','67898765')
- 
-INSERT INTO paciente(nome,cpf,dataNascimento,email,Logradouro,cel,numero,complemento,cidade,estado,cep)
-VALUES ('Margarida','78940287300','2000-10-01','Margarida88@gmail.com','Rua das Flores','13981756834','21','apartamento','Sao Vicente','SP','56789287')
- 
-INSERT INTO paciente(nome,cpf,dataNascimento,email,Logradouro,cel,numero,complemento,cidade,estado,cep)
-VALUES ('Patinhas','43318576084','1998-03-10','Pato@gmail.com','Nove de abril','13998937863','66','Casa','Santos','SP','67829034')
- 
-INSERT INTO paciente(nome,cpf,dataNascimento,email,Logradouro,cel,numero,complemento,cidade,estado,cep)
-VALUES ('Huguinho','11549545017','2009-12-04','Hugo1@gmail.com','Rua quatro','13980262561','88','Apartamento','Cubatão','SP','28910239')
- 
-INSERT INTO paciente(nome,cpf,dataNascimento,email,Logradouro,cel,numero,complemento,cidade,estado,cep)
-VALUES ('Luizinho','68510451095','2010-06-07','Luiz@gmail.com','Rua Moreira','13988665469','10','Apartamento','Praia Grande','SP','56782912')
- 
-INSERT INTO paciente(nome,cpf,dataNascimento,email,Logradouro,cel,numero,complemento,cidade,estado,cep)
-VALUES ('Zezinho','73965509047','2005-08-06','zezinho@gmail.com','Rua da Cruz','32975649321','55','Casa','São João del Rei','MG','7890234')
- 
-INSERT INTO paciente(nome,cpf,dataNascimento,email,Logradouro,cel,numero,complemento,cidade,estado,cep)
-VALUES ('Mickey','58884334039','1994-01-11','Mickey@gmail.com','Rua Boa Vista','21981142271','20','Apartamento','Rio de Janeiro','RJ','67289182')
- 
-INSERT INTO paciente(nome,cpf,dataNascimento,email,Logradouro,cel,numero,complemento,cidade,estado,cep)
-VALUES ('Minie','30507409060','2001-05-07','Minie12@gmail.com','Rua 13 de maio','11972822392','23','Casa','São Paulo','SP','8920398')
+SELECT * FROM paciente
+SELECT * FROM recepcionista
+SELECT * FROM especialidade
+SELECT * FROM medico
+SELECT * FROM consulta
+SELECT * FROM exame
 
-);
+/*questão 1-Inserir de forma implícita 8 pacientes*/
+INSERT INTO paciente
+VALUES (1,'Donald','12345678901','98872773211' ,'donaldduck@gmail.com','rua luiz cunha','123','ap2','Santos','87654321','rua perigosa', 'SP'),
+    (2,'Margarida','09876543212','988728808' ,'margarida@gmail.com','rua morgan cunha','321','ap3','São Vicente','12345678','rua segura', 'SP'),
+    (3,'Patinhas','54637281901 ','988704605' ,'	patinhas@gmail.com','rua pedro cunha','222','ap4','Santos','22187635','', 'SP'),
+    (4,'Huguinho','98735102811' ,' 83209864571','huguinho@gmail,com','rua don pedro','111','ap5','Cubatão','09872144','' ,'SP'),
+    (5,'Luizinho','03761528391 ',' 92823716273','luizinho@gmail,com','rua macaco prego','333','ap6','Praia Grande','99999999','', 'SP'),
+    (6,'Zezinho',' 93726615229',' 8372716382','zezinho@gmail.com','rua bras cubas','342','ap7','São João del Rei','09182771','', 'MG'),
+    (7,'Mickey','12334455667 ','827193936541 ','mickey@gmail.com','rua jeffrey ','444','ap8','Rio de Janeiro','32919999','', 'RJ'),
+    (8,'Minie','00998877665 ','8273621823931 ','minie@gmail.com','casa da minie','555','','São Paulo','01112333','', 'SP');
 
-INSERT INTO recepcionista(nomeRecepcionista,loginRecepcionista,senha,celular,cpf)
-VALUES ('Chico Bento','chicobento.senaclin','chico001','13996020743','60539551082')
- 
-INSERT INTO recepcionista(nomeRecepcionista,loginRecepcionista,senha,celular,cpf)
-VALUES ('Franjinha','franjinha.senaclin','7829012a','13987529725','21165291070')
- 
-INSERT INTO recepcionista(nomeRecepcionista,loginRecepcionista,senha,celular,cpf)
-VALUES ('Cebolinha','cebolinha.senaclin','cebola92','13981228103','57908408095')
+/*questão 2-Inserir de forma explícita 3 recepcionistas*/
+INSERT INTO recepcionista (idRecepcionista, nome, cpf, login, senha, celular)
+VALUES 
+(1, 'Chico Bento', '11111111111', 'chicobento.senaclin', '123456', '99999999999'),
+(2, 'Franjinha', '22222222222', 'franjinha.senaclin', '123456', '11111111111'),
+(3, 'Cebolinha', '33333333333', 'cebolinha.senaclin', '123456', '88888888888');
 
-);
+/*questão 3-Inserir de forma explícita 5 especialidades.
+Para facilitar, utilize a forma reduzida para realizar vários inserts de uma única
+vez, como visto em nossos encontros.*/
+INSERT INTO especialidade (nomeEspecialidade)
+VALUES 
+('Cardiologista'),
+('Otorrinolaringologista'),
+('Clínico Geral'),
+('Gastroenterologista'),
+('Ortopedista');
 
-INSERT INTO medico(nome,crm,login,senha,idEspecialidade)
-VALUES ('Pardal','765544SP','pardal_med.senaclin','892092','Cardiologista')
+/*questão 4-Inserir de forma implícita 5 médicos*/
+INSERT INTO medico (IdEspecialidade, nome, crm, login, senha)
+VALUES 
+(1, 'Pardal', '765544SP', 'pardal_med.senaclin', '123456'),
+(5, 'Mônica', '768880SP', 'monica_med.senaclin', '123456'),
+(3, 'Zé Carioca', '165544RJ', 'zeca_med.senaclin', '123456'),
+(4, 'Magali', '265544SP', 'magali_med.senaclin', '123456'),
+(2, 'Horácio', '365544MG', 'horacio_med.senaclin', '123456');
 
-INSERT INTO medico(nome,crm,login,senha,idEspecialidade)
-VALUES ('Mônica','768880SP','monica_med.senaclin','890316','Ortopedista')
+/*questão 5- Inserir de forma explícita uma consulta para cada médico
+Dados conforme abaixo, demais dados livres. Atenção para colocar
+datas de consultas posteriores a data de hoje.*/
+INSERT INTO consulta (idPaciente, idRecepcionista, idMedico, dataHoraConsulta, sintomas, prescricao)
+VALUES 
+(1, 1, 1, '2024-06-25 10:00:00', 'Febre', 'Repouso'),
+(2, 1, 2, '2024-06-26 11:00:00', 'Dor no joelho', 'Anti-inflamatório'),
+(3, 1, 3, '2024-06-27 12:00:00', 'Dor abdominal', 'Exames'),
+(7, 2, 4, '2024-06-28 13:00:00', 'Dor de estômago', 'Dieta'),
+(8, 2, 5, '2024-06-29 14:00:00', 'Dor de ouvido', 'Medicação');
 
-INSERT INTO medico(nome,crm,login,senha,idEspecialidade)
-VALUES ('Zé Carioca','165544RJ','zeca_med.senaclin','789402','Clínico Geral')
+/*questão 6-Inserir mais duas consultas ao Patinhas
+Dados conforme abaixo, demais dados livres. Atenção para colocar
+datas de consultas posteriores a data de hoje.*/
+INSERT INTO consulta (idPaciente, idRecepcionista, idMedico, dataHoraConsulta, sintomas, prescricao)
+VALUES 
+(3, 1, 1, '2024-06-30 15:00:00', 'Dor no peito', 'Eletrocardiograma'),
+(3, 1, 2, '2024-07-01 16:00:00', 'Dor nas costas', 'Raio-X coluna');
 
-INSERT INTO medico(nome,crm,login,senha,idEspecialidade)
-VALUES ('Magali','265544SP','magali_med.senaclin','3892037','Gastroenterologista')
+/*questão 7-.Inserir um exame para cada consulta do Patinhas criada no item anterior (6)*/
+INSERT INTO exame (idConsulta, dataHoraExame, nomeExame, statusExame)
+VALUES 
+(3, '2024-06-30 15:30:00', 'Eletrocardiograma', 'Pendente'),
+(5, '2024-07-01 16:30:00', 'Raio-X Coluna', 'Pendente');
 
-INSERT INTO medico(nome,crm,login,senha,idEspecialidade)
-VALUES ('Horácio','365544MG','horacio_med.senaclin','384902','Otorrinolaringologista')
- 
-);
-UPDATE Paciente
-SET logradouro = 'Avenida Paulista, 123, ap 45'
+/*questão 8-Remarcar (Atualizar) a consulta do Donald para a mesma data porém, 2hs mais tarde.*/
+UPDATE consulta
+SET dataHoraConsulta = DATE_ADD(dataHoraConsulta, INTERVAL 2 HOUR)
+WHERE idConsulta = 1;
+
+/*questão 9-A Minie mudou de endereço mas não mudou de cidade (logradouro, numero e
+complemento). Realize a alteração dos dados.*/
+UPDATE paciente
+SET logradouro = 'nova rua', numero = '456', complemento = 'ap10'
 WHERE nome = 'Minie';
 
-);
-UPDATE Paciente
-SET cel = '21987654321'
+/*questão 10-O Mickey mudou o celular, realize a alteração.*/
+UPDATE paciente
+SET cel = '999888777'
 WHERE nome = 'Mickey';
 
-);
+/*questão 11-O Patinhas não poderá comparecer na consulta com o Ze Carioca. Realize a exclusão da
+mesma no sistema. Foi possível? Justifique.*/
+DELETE FROM consulta
+WHERE idPaciente = 3 AND idMedico = 3;
+/*motivo do erro*/
+/*Esta operação pode falhar devido a uma restrição de chave estrangeira. A consulta do Patinhas com Zé Carioca pode estar referenciada em outras tabelas (por exemplo, na tabela exame através da chave estrangeira idConsulta). Antes de excluir, seria necessário remover as dependências nesses registros relacionados*/
+
+/*questão 12-Realize a exclusão da Dr Mônica da tabela Medico. Foi possível? Justifique.*/
+DELETE FROM medico
+WHERE nome = 'Mônica';
+/*Não é possível excluir a médica Mônica diretamente devido a restrições de chave estrangeira. Ela pode estar associada a consultas na tabela consulta ou a exames na tabela exame. Para excluir, primeiro seria necessário remover todas as dependências relacionadas a ela nessas tabelas.*/
+
+/*questão 13-Exibir a data de todas as consultas em ordem cronológica, da que está mais próxima para a
+que está mais longe.*/
 SELECT dataHoraConsulta
-FROM Consulta
-ORDER BY dataHoraConsulta ASC;
-); 
-SELECT *
-FROM medico;
-); 
+FROM consulta
+ORDER BY dataHoraConsulta;
+
+/*questão 14-Exibir todos os dados da tabela médico.*/
+SELECT * FROM medico;
+
+/*questão 15-Exibir apenas as cidades em que a clínica possui pacientes, em ordem alfabética.*/
 SELECT DISTINCT cidade
-FROM Paciente
-ORDER BY cidade ASC;
-); 
+FROM paciente
+ORDER BY cidade;
+
+/*questão 16-Exibir nome, celular e e-mail de todos os pacientes da clínica, em ordem alfabética.*/
 SELECT nome, cel, email
-FROM Paciente
-ORDER BY nome ASC;
-);
-UPDATE Medico
+FROM paciente
+ORDER BY nome;
+
+/*questão 17-Atualizar apenas o CRM do Dr.Pardal que foi cadastrado errado no sistema.*/
+UPDATE medico
 SET crm = '765544SP'
 WHERE nome = 'Pardal';
 
+/*questão 18-Resetar a senha de todos os médicos do sistema para o padrão "DOCTOR".*/
+UPDATE medico
+SET senha = 'DOCTOR';
+
+/*questão 19-Exibir apenas o nome do médico e seu CRM, dos médicos registrados em SP, tudo isto em
+ordem alfabética.*/
+SELECT nome, crm
+FROM medico
+WHERE crm LIKE '%SP%'
+ORDER BY nome;
+
+/*questão 20-Exibir nome e celular de todos os pacientes que vivem em Santos e possuem nome
+iniciando com a letra P.*/
+SELECT nome, cel
+FROM paciente
+WHERE cidade = 'Santos' AND nome LIKE 'P%'
+ORDER BY nome;
+
+
+/*desafio- Exibir o nome, logradouro, numero e cidade de todos os pacientes que moram em
+casa, em ordem alfabética.*/
+SELECT nome, logradouro, numero, cidade
+FROM paciente
+WHERE logradouro LIKE '%casa%'
+ORDER BY nome;
